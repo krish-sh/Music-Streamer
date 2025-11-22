@@ -30,7 +30,7 @@ export default function MusicCard({ music, fetchSongs }) {
   };
 
   return (
-    <div className="bg-gradient-to-b from-black to-gray-400 text-white rounded-lg shadow-lg overflow-hidden transition-transform transform relative">
+    <div className="bg-gradient-to-b from-black to-gray-500 text-white rounded-lg shadow-lg overflow-hidden transition-transform transform relative">
       <img
         src={imagesrc}
         alt={music.title}
