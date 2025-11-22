@@ -16,7 +16,7 @@ export default function SideBarAdmin() {
       <img
         src={music}
         onClick={() => navigate("/")}
-        className="mt-1 w-24 md:hidden block cursor-pointer"
+        className="mt-1 w-12 md:hidden block cursor-pointer"
       />
 
       <div className="flex items-center flex-col gap-5  py-2 px-2">
