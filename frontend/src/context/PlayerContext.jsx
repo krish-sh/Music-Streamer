@@ -8,11 +8,11 @@ const PlayerContextProvider = ({ children }) => {
 
   const [songData, setSongData] = useState([]);
 
-  const fetchSongs = async (req, res) => {
+  const fetchSongs = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/api/admin/get-music`);
 
-      setSongData(data.musics);
+      setSongData(data.music);
     } catch (error) {
       console.log("Error in Fetch song Context:", error);
     }

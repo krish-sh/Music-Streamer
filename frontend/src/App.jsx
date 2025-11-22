@@ -6,6 +6,7 @@ import ListSong from "./pages/ListSong.jsx";
 import SideBar from "./components/SideBar.jsx";
 import Header from "./components/Header.jsx";
 import Display from "./components/Display.jsx";
+import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   const location = useLocation();
@@ -15,6 +16,7 @@ function App() {
   return (
     <>
       <div className="flex relative h-screen">
+        <Toaster />
         {isAdminPage ? (
           <>
             <SideBarAdmin />

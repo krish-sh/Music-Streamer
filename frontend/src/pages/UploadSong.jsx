@@ -1,20 +1,79 @@
-import { createContext } from "react";
+import { useContext, useState } from "react";
 import { PlayerContext } from "../context/PlayerContext";
 import { useNavigate } from "react-router-dom";
 import uploadMusic from "../assets/arrow.png";
 import uploadImage from "../assets/image-.png";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function UploadSong() {
-  const { backendUrl } = createContext(PlayerContext);
+  const { backendUrl } = useContext(PlayerContext);
   const navigate = useNavigate();
+
+  const [image, setImage] = useState(false);
+  const [music, setMusic] = useState(false);
+  const [songData, setSongData] = useState({
+    title: "",
+    artist: "",
+  });
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("title", songData.title);
+      formData.append("artist", songData.artist);
+      formData.append("image", image);
+      formData.append("music", music);
+
+      const { data } = await axios.post(
+        `${backendUrl}/api/admin/add-music`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (data.success) {
+        toast.success(data.message);
+        navigate("/list-songs");
+        setSongData({
+          title: "",
+          artist: "",
+        });
+        setImage(false);
+        setMusic(false);
+      } else {
+        toast.error("error in data submit");
+      }
+    } catch (error) {
+      console.log("Error in Upload submit button", error);
+      toast.error("Submit button error");
+    }
+  };
+
+  const onChangeHandler = async (e) => {
+    const { name, value } = e.target;
+    setSongData({ ...songData, [name]: value });
+  };
 
   return (
     <div className="flex h-screen items-center">
-      <form className="flex flex-col max-h-screen gap-8 text-gray-600 w-full max-w-xl mx-auto p-4 sm:6 md:p-8    shadow-sm  rounded-xl shadow-black">
+      <form
+        onSubmit={onSubmit}
+        className="flex flex-col max-h-screen gap-8 text-gray-600 w-full max-w-xl mx-auto p-4 sm:6 md:p-8    shadow-sm  rounded-xl shadow-black"
+      >
         <div className="flex flex-col md:flex-row gap-6 items-center ">
           <div className="flex flex-col items-center gap-2">
             <p className="text-sm md:text-base">Upload Song</p>
-            <input type="file" id="song" accept="audio/*" hidden />
+            <input
+              onChange={(e) => setMusic(e.target.files[0])}
+              type="file"
+              id="song"
+              accept="audio/*"
+              hidden
+            />
             <label htmlFor="song">
               <img
                 src={uploadMusic}
@@ -24,10 +83,16 @@ export default function UploadSong() {
           </div>
           <div className="flex flex-col items-center gap-2  ">
             <p className="text-sm md:text-base">Upload Image</p>
-            <input type="file" id="image" accept="image/*" hidden />
+            <input
+              onChange={(e) => setImage(e.target.files[0])}
+              type="file"
+              id="image"
+              accept="image/*"
+              hidden
+            />
             <label htmlFor="image">
               <img
-                src={uploadImage}
+                src={image ? URL.createObjectURL(image) : uploadImage}
                 className="w-24 h-24 md:w-32 md:h-32 cursor-pointer object-contain"
               />
             </label>
@@ -41,6 +106,8 @@ export default function UploadSong() {
             id="title"
             type="text"
             name="title"
+            value={songData.title}
+            onChange={onChangeHandler}
             className="bg-transparent w-full p-2.5 rounded-lg outline-none border "
             placeholder="Song name"
             required
@@ -53,6 +120,8 @@ export default function UploadSong() {
           <input
             id="artist"
             type="text"
+            value={songData.artist}
+            onChange={onChangeHandler}
             name="artist"
             className="bg-transparent w-full p-2.5 rounded-lg outline-none border"
             placeholder="Artist name"
@@ -69,6 +138,3 @@ export default function UploadSong() {
     </div>
   );
 }
-
-
-// 1:45
