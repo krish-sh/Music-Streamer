@@ -30,10 +30,10 @@ function App() {
         ) : (
           <>
             <SideBar />
-            <div className="flex-1 bg-black overflow-y-scroll">
+            <div className="flex-1 bg-black overflow-y-scroll relative">
               <Header />
             </div>
-            <div className="flex-2 bg-black hidden lg:block p-2">
+            <div className=" hidden lg:block p-2 ">
               <Display />
             </div>
           </>
