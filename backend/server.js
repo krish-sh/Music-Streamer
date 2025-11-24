@@ -14,7 +14,15 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://music-streamer-alpha.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 
 app.use("/tmp", express.static(path.join(path.resolve(), "tmp")));
 
