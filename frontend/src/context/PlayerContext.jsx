@@ -4,7 +4,7 @@ import axios from "axios";
 export const PlayerContext = createContext();
 
 const PlayerContextProvider = ({ children }) => {
-  const backendUrl = "http://localhost:4000";
+  const backendUrl = "https://music-streamer-ekod.onrender.com";
 
   const [songData, setSongData] = useState([]);
 
